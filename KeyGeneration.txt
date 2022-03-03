@@ -1,0 +1,128 @@
+#!/usr/bin/python3
+import math
+import random
+
+#We can change the size of p , q and other parameter with this bit.... Here p & q are 16 bit.
+bit = 16
+
+
+def is_prime(n):
+    if (n % 2 == 0 and n > 2) or (n < 2):
+        return False
+    for i in range(3, int(math.sqrt(n)), 2):
+        if n % i == 0:
+            return False
+    return True
+
+
+def getRandomPrimeofBit(b=bit):
+    pT = random.randrange(2**(b-1)+1, 2**b-1, 2)
+    assert(pT % 2 == 1)
+    while(not is_prime(pT)):
+        pT = pT+2
+    return pT
+
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
+
+def getExponent(phiN):
+    x = getRandomPrimeofBit(bit/2)
+    assert(gcd(x, phiN) == 1)
+    assert(x < phiN)
+    return x
+
+
+def extendedEuclideanGCD(a, b):
+    #This extended Eucliean GCD Algorithm is same as the algorithm
+    #provided in the class slide.
+    x = 1
+    y = 0
+    d = a
+    r = 0
+    s = 1
+    t = b
+    while(t > 0):
+        q = d//t
+        u = x-q*r
+        v = y-q*s
+        w = d-q*t
+        x = r
+        y = s
+        d = t
+        r = u
+        s = v
+        t = w
+    return d, x, y
+
+
+def getDecryption(e, phi_n):
+    g, x, y = extendedEuclideanGCD(e, phi_n)
+    dT = (x+phi_n) % phi_n
+    assert(dT % 2 == 1)
+    assert(dT < phi_n)
+    assert((e*dT) % phi_n == 1)
+    return dT
+
+
+def aPOWbMODm(a, b, m):
+    assert a >= 0
+    assert b >= 0
+    assert m > 0
+    if a == 0:
+        return 0
+    if b == 0:
+        return 1
+    a = a % m
+    if b % 2 == 0:
+        y = aPOWbMODm(a, b/2, m)
+        y = (y*y) % m
+    else:
+        y = (a*aPOWbMODm(a, b-1, m))
+    return (y+m) % m
+
+
+def encrypt(p, e, N):
+    return aPOWbMODm(p, e, N)
+
+
+def decrypt(c, d, N):
+    return aPOWbMODm(c, d, N)
+
+
+def generateKeyParameter():
+    p = getRandomPrimeofBit()
+    q = getRandomPrimeofBit()
+    while(p == q):
+        q = getRandomPrimeofBit()  # p shouldn't be equal to q.
+    N = p*q
+    phi_N = (p-1)*(q-1)
+    e = getExponent(phi_N)  #
+    d = getDecryption(e, phi_N)
+
+    # assertions
+    print("Bit =", bit, "p =", p, ", q =", q, ", N =",
+          N, ", phi_N =", phi_N, ", e =", e, ", d =", d)
+    #Checking if our parameters are correct
+    assert is_prime(p)
+    assert is_prime(q)
+    assert is_prime(65537) == True
+    assert p != q
+    assert N == p*q
+    assert phi_N == (p-1)*(q-1)
+    assert gcd(11*13, 13*17) == 13
+    assert gcd(e, phi_N) == 1
+    assert (e*d) % phi_N == 1
+    assert e < phi_N
+    assert e < d
+    assert d < phi_N
+    #Checking if Decrypt(Encrypt(Plaintext))==Plaintext or cheking the encryption & decryption is correct
+    for m in [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 13]:
+        assert decrypt(encrypt(m, e, N), d, N) == m
+
+
+generateKeyParameter()

@@ -1,0 +1,43 @@
+# IDs
+MY_ID = 40185834
+PARTNER_ID = 40163113
+
+# my data
+p = 46381
+q = 53759
+N = 2493396179
+phi_N = 2493296040
+e = 65537
+d = 807638153
+
+# my partner data
+PARTNER_N = 165862241
+PARTNER_e = 27799
+
+# encryption
+MY_MESSAGE = "Hi-Riya-Hello-From-Shiva!!!"
+MY_MESSAGE_chunks = ['Hi-', 'Riy', 'a-H', 'ell', 'o-F', 'rom', '-Sh', 'iva', '!!!']
+MY_CIPHERTEXT = [120383502, 134481633, 78993920, 54489802, 59457011, 122469796, 129230930, 103414046, 52285080]
+
+# decryption
+PARTNER_CIPHERTEXT = [880248732, 2326532686, 538046734, 1891347078, 2460709033, 1696673335, 271255283, 880248732, 2326532686, 2194216549]
+PARTNER_MESSAGE_chunks_AFTER_DECRYPT = ['you', ' ca', 'n i', 'f y', 'ou ', 'thi', 'nk ', 'you', ' ca', 'n!!']
+PARTNER_MESSAGE_AFTER_DECRYPT = "you can if you think you can!!"
+
+
+# sign
+MY_MESSAGE_TO_BE_SIGNED = "Shiva-Sunar"
+MY_MESSAGE_TO_BE_SIGNED_chunks = ['Shi', 'va-', 'Sun', 'ar']
+MY_SIGNATURE = [1261192253, 694844843, 1356427740, 1567716940]
+
+# verfiy the signature
+PARTNER_SIGNED_MESSAGE = "RIYA--POBARI"
+PARTNER_SIGNATURE = [127501024, 88939517, 45891312, 148387753]
+#IS_VALID_SIGNATURE should be True or False
+IS_VALID_SIGNATURE = True
+
+
+
+COMMENTS = '''
+# If you have a short comment, write it here
+'''
