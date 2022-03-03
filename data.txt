@@ -1,6 +1,6 @@
 # IDs
-MY_ID = 40185834
-PARTNER_ID = 40163113
+MY_ID = 401xxxx
+PARTNER_ID = 401xxxx
 
 # my data
 p = 46381
